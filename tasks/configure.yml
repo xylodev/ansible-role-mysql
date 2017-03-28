@@ -4,7 +4,7 @@
     src: my.cnf.j2
     dest: "{{ mysql_config_file }}"
     owner: root
-    group: root
+    group: "{{ mysql_root_group }}"
     mode: 0644
     force: "{{ overwrite_global_mycnf }}"
   notify: restart mysql
@@ -14,7 +14,7 @@
     path: "{{ mysql_config_include_dir }}"
     state: directory
     owner: root
-    group: root
+    group: "{{ mysql_root_group }}"
     mode: 0755
   when: mysql_config_include_files | length
 
@@ -23,7 +23,7 @@
     src: "{{ item.src }}"
     dest: "{{ mysql_config_include_dir }}/{{ item.src | basename }}"
     owner: root
-    group: root
+    group: "{{ mysql_root_group }}"
     mode: 0644
     force: "{{ item.force | default(False) }}"
   with_items: "{{ mysql_config_include_files }}"
